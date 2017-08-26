@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-go build -o bin/cprofile main/main.go
+go build -o bin/iso main/main.go
