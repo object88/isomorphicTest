@@ -1,15 +1,44 @@
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"fmt"
+
+	"github.com/object88/isomorphicTest/client"
+	"github.com/spf13/cobra"
+)
 
 func createGenerateCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate",
 		Short: "generate will create a new UUID",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return nil
-		},
+		RunE:  run,
 	}
 
 	return cmd
+}
+
+func run(_ *cobra.Command, _ []string) error {
+	c, err := client.NewClient()
+	if err != nil {
+		return err
+	}
+
+	if uuid, ok := c.GenerateUUID(); ok {
+		c.DestroyClient()
+		fmt.Printf("Received UUID: %s\n", uuid)
+		return nil
+	}
+
+	c, err = c.RequestNewService()
+	if err != nil {
+		return err
+	}
+
+	if uuid, ok := c.GenerateUUID(); ok {
+		fmt.Printf("Received UUID: %s\n", uuid)
+	}
+
+	c.DestroyClient()
+
+	return nil
 }

@@ -33,3 +33,11 @@ Alternatley, the server can be started deliberately with the `iso start` command
 ## Shutdown
 
 The server should shut down after a period of inactivity.  Alternately, the server can be stopped proactively by issuing an `iso stop` command.
+
+## Notes
+
+Use command
+
+`protoc -I proto proto/generate.proto --go_out=plugins=grpc:proto`
+
+... in the main directory, to create `generate.pb.go`

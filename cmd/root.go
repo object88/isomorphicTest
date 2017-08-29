@@ -8,6 +8,7 @@ func InitializeCommands() *cobra.Command {
 
 	rootCmd.AddCommand(
 		createGenerateCommand(),
+		createServeCommand(),
 		createStartCommand(),
 		createStopCommand(),
 	)
@@ -17,7 +18,7 @@ func InitializeCommands() *cobra.Command {
 
 func createRootCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "isomorphicTest",
+		Use:   "iso",
 		Short: "isomorphicTest exercises a client/server configuration as a single binary",
 		Run: func(cmd *cobra.Command, args []string) {
 			cmd.HelpFunc()(cmd, args)

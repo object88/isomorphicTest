@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package proto;
+
+service Generator {
+  rpc GenerateUUID (UUIDRequest) returns (UUIDReply) {}
+}
+
+message UUIDRequest {
+}
+
+message UUIDReply {
+  string uuid = 1;
+}

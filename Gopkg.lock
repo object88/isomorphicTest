@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/google/uuid"
+  packages = ["."]
+  revision = "064e2069ce9c359c118179501254f67d7d37ba24"
+  version = "0.2"
+
+[[projects]]
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
@@ -22,6 +28,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fd56cc1810ff527dc29fa5ac153938af6d8df6a405c953638f1275f24d6073d9"
+  inputs-digest = "3bb6639ac05a3192e0083ae72a64944da76781e0f7299bc4fcfd04831b2f394b"
   solver-name = "gps-cdcl"
   solver-version = 1
