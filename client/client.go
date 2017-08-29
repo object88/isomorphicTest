@@ -54,9 +54,28 @@ func (c *Client) RequestNewService() (*Client, error) {
 	}
 
 	time.Sleep(500 * time.Millisecond)
-	fmt.Printf("Slept.\n")
 
 	return NewClient()
+}
+
+// RequestShutdown sends a gRPC call to request the service process to shut down.
+func (c *Client) RequestShutdown() error {
+	_, err := c.c.Shutdown(context.Background(), &proto.ShutdownRequest{})
+	if err == nil {
+		return nil
+	}
+
+	s, ok := status.FromError(err)
+	if !ok {
+		return err
+	}
+
+	code := s.Code()
+	if code == codes.Unavailable {
+		return nil
+	}
+
+	return err
 }
 
 // GenerateUUID will create a new UUID

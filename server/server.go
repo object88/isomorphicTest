@@ -23,7 +23,7 @@ func InitializeService() error {
 	}
 
 	s := grpc.NewServer()
-	proto.RegisterGeneratorServer(s, &isomorphicTest.Generator{})
+	proto.RegisterGeneratorServer(s, &isomorphicTest.Generator{S: s})
 
 	// Register reflection service on gRPC server.
 	reflection.Register(s)

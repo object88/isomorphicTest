@@ -4,6 +4,13 @@ package proto;
 
 service Generator {
   rpc GenerateUUID (UUIDRequest) returns (UUIDReply) {}
+  rpc Shutdown (ShutdownRequest) returns (ShutdownReply) {}
+}
+
+message ShutdownRequest {
+}
+
+message ShutdownReply {
 }
 
 message UUIDRequest {
