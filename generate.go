@@ -8,12 +8,13 @@ import (
 	"google.golang.org/grpc"
 )
 
+// Generator keeps the gRPC Server reference
 type Generator struct {
 	S *grpc.Server
 }
 
 // GenerateUUID returns a string UUID
-func (g *Generator) GenerateUUID(ctx context.Context, _ *proto.UUIDRequest) (*proto.UUIDReply, error) {
+func (g *Generator) GenerateUUID(ctx context.Context, _ *proto.EmptyRequest) (*proto.UUIDReply, error) {
 	u, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
@@ -27,7 +28,12 @@ func (g *Generator) GenerateUUID(ctx context.Context, _ *proto.UUIDRequest) (*pr
 }
 
 // Shutdown stops the service process
-func (g *Generator) Shutdown(_ context.Context, _ *proto.ShutdownRequest) (*proto.ShutdownReply, error) {
+func (g *Generator) Shutdown(_ context.Context, _ *proto.EmptyRequest) (*proto.EmptyReply, error) {
 	g.S.GracefulStop()
-	return &proto.ShutdownReply{}, nil
+	return &proto.EmptyReply{}, nil
+}
+
+// Startup is a no-op to start the service
+func (g *Generator) Startup(_ context.Context, _ *proto.EmptyRequest) (*proto.EmptyReply, error) {
+	return &proto.EmptyReply{}, nil
 }

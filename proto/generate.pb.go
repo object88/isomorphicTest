@@ -8,9 +8,8 @@ It is generated from these files:
 	generate.proto
 
 It has these top-level messages:
-	ShutdownRequest
-	ShutdownReply
-	UUIDRequest
+	EmptyRequest
+	EmptyReply
 	UUIDReply
 */
 package proto
@@ -35,29 +34,21 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto1.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type ShutdownRequest struct {
+type EmptyRequest struct {
 }
 
-func (m *ShutdownRequest) Reset()                    { *m = ShutdownRequest{} }
-func (m *ShutdownRequest) String() string            { return proto1.CompactTextString(m) }
-func (*ShutdownRequest) ProtoMessage()               {}
-func (*ShutdownRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (m *EmptyRequest) Reset()                    { *m = EmptyRequest{} }
+func (m *EmptyRequest) String() string            { return proto1.CompactTextString(m) }
+func (*EmptyRequest) ProtoMessage()               {}
+func (*EmptyRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
-type ShutdownReply struct {
+type EmptyReply struct {
 }
 
-func (m *ShutdownReply) Reset()                    { *m = ShutdownReply{} }
-func (m *ShutdownReply) String() string            { return proto1.CompactTextString(m) }
-func (*ShutdownReply) ProtoMessage()               {}
-func (*ShutdownReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
-
-type UUIDRequest struct {
-}
-
-func (m *UUIDRequest) Reset()                    { *m = UUIDRequest{} }
-func (m *UUIDRequest) String() string            { return proto1.CompactTextString(m) }
-func (*UUIDRequest) ProtoMessage()               {}
-func (*UUIDRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
+func (m *EmptyReply) Reset()                    { *m = EmptyReply{} }
+func (m *EmptyReply) String() string            { return proto1.CompactTextString(m) }
+func (*EmptyReply) ProtoMessage()               {}
+func (*EmptyReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
 
 type UUIDReply struct {
 	Uuid string `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
@@ -66,7 +57,7 @@ type UUIDReply struct {
 func (m *UUIDReply) Reset()                    { *m = UUIDReply{} }
 func (m *UUIDReply) String() string            { return proto1.CompactTextString(m) }
 func (*UUIDReply) ProtoMessage()               {}
-func (*UUIDReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{3} }
+func (*UUIDReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
 
 func (m *UUIDReply) GetUuid() string {
 	if m != nil {
@@ -76,9 +67,8 @@ func (m *UUIDReply) GetUuid() string {
 }
 
 func init() {
-	proto1.RegisterType((*ShutdownRequest)(nil), "proto.ShutdownRequest")
-	proto1.RegisterType((*ShutdownReply)(nil), "proto.ShutdownReply")
-	proto1.RegisterType((*UUIDRequest)(nil), "proto.UUIDRequest")
+	proto1.RegisterType((*EmptyRequest)(nil), "proto.EmptyRequest")
+	proto1.RegisterType((*EmptyReply)(nil), "proto.EmptyReply")
 	proto1.RegisterType((*UUIDReply)(nil), "proto.UUIDReply")
 }
 
@@ -93,8 +83,9 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for Generator service
 
 type GeneratorClient interface {
-	GenerateUUID(ctx context.Context, in *UUIDRequest, opts ...grpc.CallOption) (*UUIDReply, error)
-	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownReply, error)
+	GenerateUUID(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*UUIDReply, error)
+	Shutdown(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*EmptyReply, error)
+	Startup(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*EmptyReply, error)
 }
 
 type generatorClient struct {
@@ -105,7 +96,7 @@ func NewGeneratorClient(cc *grpc.ClientConn) GeneratorClient {
 	return &generatorClient{cc}
 }
 
-func (c *generatorClient) GenerateUUID(ctx context.Context, in *UUIDRequest, opts ...grpc.CallOption) (*UUIDReply, error) {
+func (c *generatorClient) GenerateUUID(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*UUIDReply, error) {
 	out := new(UUIDReply)
 	err := grpc.Invoke(ctx, "/proto.Generator/GenerateUUID", in, out, c.cc, opts...)
 	if err != nil {
@@ -114,9 +105,18 @@ func (c *generatorClient) GenerateUUID(ctx context.Context, in *UUIDRequest, opt
 	return out, nil
 }
 
-func (c *generatorClient) Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownReply, error) {
-	out := new(ShutdownReply)
+func (c *generatorClient) Shutdown(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*EmptyReply, error) {
+	out := new(EmptyReply)
 	err := grpc.Invoke(ctx, "/proto.Generator/Shutdown", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *generatorClient) Startup(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*EmptyReply, error) {
+	out := new(EmptyReply)
+	err := grpc.Invoke(ctx, "/proto.Generator/Startup", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,8 +126,9 @@ func (c *generatorClient) Shutdown(ctx context.Context, in *ShutdownRequest, opt
 // Server API for Generator service
 
 type GeneratorServer interface {
-	GenerateUUID(context.Context, *UUIDRequest) (*UUIDReply, error)
-	Shutdown(context.Context, *ShutdownRequest) (*ShutdownReply, error)
+	GenerateUUID(context.Context, *EmptyRequest) (*UUIDReply, error)
+	Shutdown(context.Context, *EmptyRequest) (*EmptyReply, error)
+	Startup(context.Context, *EmptyRequest) (*EmptyReply, error)
 }
 
 func RegisterGeneratorServer(s *grpc.Server, srv GeneratorServer) {
@@ -135,7 +136,7 @@ func RegisterGeneratorServer(s *grpc.Server, srv GeneratorServer) {
 }
 
 func _Generator_GenerateUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UUIDRequest)
+	in := new(EmptyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -147,13 +148,13 @@ func _Generator_GenerateUUID_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/proto.Generator/GenerateUUID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GeneratorServer).GenerateUUID(ctx, req.(*UUIDRequest))
+		return srv.(GeneratorServer).GenerateUUID(ctx, req.(*EmptyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Generator_Shutdown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShutdownRequest)
+	in := new(EmptyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -165,7 +166,25 @@ func _Generator_Shutdown_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/proto.Generator/Shutdown",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GeneratorServer).Shutdown(ctx, req.(*ShutdownRequest))
+		return srv.(GeneratorServer).Shutdown(ctx, req.(*EmptyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Generator_Startup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GeneratorServer).Startup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Generator/Startup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GeneratorServer).Startup(ctx, req.(*EmptyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,6 +201,10 @@ var _Generator_serviceDesc = grpc.ServiceDesc{
 			MethodName: "Shutdown",
 			Handler:    _Generator_Shutdown_Handler,
 		},
+		{
+			MethodName: "Startup",
+			Handler:    _Generator_Startup_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "generate.proto",
@@ -190,16 +213,16 @@ var _Generator_serviceDesc = grpc.ServiceDesc{
 func init() { proto1.RegisterFile("generate.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 162 bytes of a gzipped FileDescriptorProto
+	// 166 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4b, 0x4f, 0xcd, 0x4b,
-	0x2d, 0x4a, 0x2c, 0x49, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x53, 0x4a, 0x82,
-	0x5c, 0xfc, 0xc1, 0x19, 0xa5, 0x25, 0x29, 0xf9, 0xe5, 0x79, 0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5,
-	0x25, 0x4a, 0xfc, 0x5c, 0xbc, 0x08, 0xa1, 0x82, 0x9c, 0x4a, 0x25, 0x5e, 0x2e, 0xee, 0xd0, 0x50,
-	0x4f, 0x17, 0x98, 0xbc, 0x3c, 0x17, 0x27, 0x84, 0x5b, 0x90, 0x53, 0x29, 0x24, 0xc4, 0xc5, 0x52,
-	0x5a, 0x9a, 0x99, 0x22, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0x19, 0x04, 0x66, 0x1b, 0xd5, 0x73, 0x71,
-	0xba, 0x43, 0x2c, 0xcb, 0x2f, 0x12, 0x32, 0xe3, 0xe2, 0x81, 0x72, 0x52, 0x41, 0xba, 0x84, 0x84,
-	0x20, 0xf6, 0xeb, 0x21, 0x99, 0x28, 0x25, 0x80, 0x22, 0x06, 0xb2, 0x92, 0x41, 0xc8, 0x8a, 0x8b,
-	0x03, 0xe6, 0x0a, 0x21, 0x31, 0xa8, 0x3c, 0x9a, 0x4b, 0xa5, 0x44, 0x30, 0xc4, 0xc1, 0x7a, 0x93,
-	0xd8, 0xc0, 0xc2, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0xe3, 0x51, 0xae, 0x5a, 0xf4, 0x00,
-	0x00, 0x00,
+	0x2d, 0x4a, 0x2c, 0x49, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x53, 0x4a, 0x7c,
+	0x5c, 0x3c, 0xae, 0xb9, 0x05, 0x25, 0x95, 0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x4a, 0x3c,
+	0x5c, 0x5c, 0x50, 0x7e, 0x41, 0x4e, 0xa5, 0x92, 0x3c, 0x17, 0x67, 0x68, 0xa8, 0xa7, 0x0b, 0x98,
+	0x23, 0x24, 0xc4, 0xc5, 0x52, 0x5a, 0x9a, 0x99, 0x22, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0x19, 0x04,
+	0x66, 0x1b, 0xad, 0x67, 0xe4, 0xe2, 0x74, 0x87, 0x18, 0x9c, 0x5f, 0x24, 0x64, 0xce, 0xc5, 0x03,
+	0xe5, 0xa4, 0x82, 0xb4, 0x09, 0x09, 0x43, 0xec, 0xd2, 0x43, 0xb6, 0x41, 0x4a, 0x00, 0x2a, 0x08,
+	0x37, 0x58, 0x89, 0x41, 0xc8, 0x84, 0x8b, 0x23, 0x38, 0xa3, 0xb4, 0x24, 0x25, 0xbf, 0x3c, 0x0f,
+	0xbb, 0x26, 0x41, 0x54, 0x41, 0x88, 0x2e, 0x63, 0x2e, 0xf6, 0xe0, 0x92, 0xc4, 0xa2, 0x92, 0xd2,
+	0x02, 0xe2, 0x35, 0x25, 0xb1, 0x81, 0xc5, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0xbd, 0xa5,
+	0x24, 0x6c, 0x10, 0x01, 0x00, 0x00,
 }

@@ -60,7 +60,7 @@ func (c *Client) RequestNewService() (*Client, error) {
 
 // RequestShutdown sends a gRPC call to request the service process to shut down.
 func (c *Client) RequestShutdown() error {
-	_, err := c.c.Shutdown(context.Background(), &proto.ShutdownRequest{})
+	_, err := c.c.Shutdown(context.Background(), &proto.EmptyRequest{})
 	if err == nil {
 		return nil
 	}
@@ -78,9 +78,19 @@ func (c *Client) RequestShutdown() error {
 	return err
 }
 
+// RequestStartup makes a no-op rGPC call to test whether the service is running
+func (c *Client) RequestStartup() error {
+	_, err := c.c.Startup(context.Background(), &proto.EmptyRequest{})
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
 // GenerateUUID will create a new UUID
 func (c *Client) GenerateUUID() (string, bool) {
-	r, err := c.c.GenerateUUID(context.Background(), &proto.UUIDRequest{})
+	r, err := c.c.GenerateUUID(context.Background(), &proto.EmptyRequest{})
 	if err == nil {
 		return r.Uuid, true
 	}

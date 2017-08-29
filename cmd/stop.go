@@ -15,6 +15,8 @@ func createStopCommand() *cobra.Command {
 				return err
 			}
 
+			defer c.DestroyClient()
+
 			return c.RequestShutdown()
 		},
 	}
