@@ -21,8 +21,7 @@ func createStartCommand() *cobra.Command {
 				return nil
 			}
 
-			c, err = c.RequestNewService()
-			if err != nil {
+			if err = c.RequestNewService(); err != nil {
 				return err
 			}
 

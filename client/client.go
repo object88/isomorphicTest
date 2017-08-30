@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"time"
 
 	"github.com/object88/isomorphicTest/proto"
 	"google.golang.org/grpc"
@@ -43,19 +42,17 @@ func (c *Client) DestroyClient() {
 
 // RequestNewService will spin up a new server-oriented process and
 // return a new client with a connection to it
-func (c *Client) RequestNewService() (*Client, error) {
-	c.DestroyClient()
-
+func (c *Client) RequestNewService() error {
 	cmd := exec.Command(os.Args[0], "serve")
 	err := cmd.Start()
 	if err != nil {
 		fmt.Printf("Failed to spin up binary!\n")
-		return nil, err
+		return err
 	}
 
-	time.Sleep(500 * time.Millisecond)
+	c.conn.WaitForStateChange(context.Background(), c.conn.GetState())
 
-	return NewClient()
+	return nil
 }
 
 // RequestShutdown sends a gRPC call to request the service process to shut down.

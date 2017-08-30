@@ -29,8 +29,7 @@ func run(_ *cobra.Command, _ []string) error {
 		return nil
 	}
 
-	c, err = c.RequestNewService()
-	if err != nil {
+	if err = c.RequestNewService(); err != nil {
 		return err
 	}
 
